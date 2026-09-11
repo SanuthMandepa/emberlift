@@ -60,6 +60,9 @@ Legend: `[ ]` not started, `[~]` in progress, `[x]` done, `[!]` blocked.
 | [ ] 2.11 | Weekday scheduling in the user's timezone | FR-026 |
 | [ ] 2.12 | Plan editor screen per mockup 06 | - |
 | [ ] 2.13 | Three starter programs, adoptable in one tap | FR-073 |
+| [ ] 2.14 | Shorthand parser for pasted coach plans. Handles `3x8 60`, rep ranges `3x10-12`, missing loads, trailing `kg`, and common separators | FR-027 |
+| [ ] 2.15 | Paste preview screen: per line match confidence, unmatched lines offer create-custom or manual pick, nothing saved until confirmed | FR-028 |
+| [ ] 2.16 | Parser unit tests against a corpus of real coach shorthand, including lines it must refuse rather than guess | FR-027, FR-028 |
 
 ## Phase 3: The session loop (online only)
 
@@ -76,6 +79,7 @@ Legend: `[ ]` not started, `[~]` in progress, `[x]` done, `[!]` blocked.
 | [ ] 3.9 | Session summary: duration, volume, variance against plan | FR-038 |
 | [ ] 3.10 | Today screen per mockup 03, active session per mockup 04 | C1 |
 | [ ] 3.11 | Playwright: full session happy path | - |
+| [ ] 3.12 | Mark a scheduled day as skipped with a reason, distinct in the UI from a missed day | FR-039 |
 
 ## Phase 4: Offline
 
@@ -104,7 +108,8 @@ Legend: `[ ]` not started, `[~]` in progress, `[x]` done, `[!]` blocked.
 | [ ] 5.6 | Weekly volume chart | FR-042 |
 | [ ] 5.7 | Muscle balance ranking and under-training flags | FR-043 |
 | [ ] 5.8 | Progressive overload rule per `plan.md` section 4, with the reason shown in words | FR-044 |
-| [ ] 5.9 | Streaks against the weekly target, rest weeks do not break them | FR-045 |
+| [ ] 5.9 | Streaks against the week's scheduled days, with Sanctioned Skips removed from the denominator rather than counted as failures | FR-045, FR-046 |
+| [ ] 5.9a | Adherence view distinguishing completed, sanctioned skip, unsanctioned skip and missed | FR-047 |
 | [ ] 5.10 | Progress screen per mockup 07, improvements screen per mockup 08 | D4, D6 |
 | [ ] 5.11 | Unit tests for every analysis function, including the deload branch | - |
 

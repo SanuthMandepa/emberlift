@@ -105,8 +105,14 @@ just beat.
 
 ## Current state
 
-Nothing is implemented. The specification is drafted and awaiting approval, and three
-open questions in [`spec.md`](specs/001-core/spec.md) section 8 are still open.
+Nothing is implemented. The specification is drafted and **all open questions are now
+closed** (see [`spec.md`](specs/001-core/spec.md) section 8). The only remaining
+blocker on implementation is product owner approval of the spec.
+
+Decisions settled so far: loads are in kilograms, there is no "rest week" concept
+(the real case is a coach telling you to skip a single day, which is recorded with a
+reason and does not count against you), and a coach's plan can be entered by pasting
+the shorthand they wrote rather than filling one form per exercise.
 
 Flutter was evaluated as an alternative to the web app on 2026-09-11 and rejected.
 The reasoning, including the advantages it would have brought, is recorded in

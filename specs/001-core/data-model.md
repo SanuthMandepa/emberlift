@@ -52,10 +52,10 @@ users ──┬── device_sessions ── refresh_tokens (families)
 | `password_updated_at` | timestamptz NOT NULL | Invalidates older tokens |
 | `display_name` | text NOT NULL | |
 | `role` | enum(`athlete`,`coach`,`admin`) DEFAULT `athlete` | Exists in v1, UI for `coach` deferred (Constitution IX) |
-| `unit_preference` | enum(`kg`,`lb`) DEFAULT `kg` | Q-002 |
+| `unit_preference` | enum(`kg`,`lb`) DEFAULT `kg` | Q-002 closed as kg only. v1 ships no switcher and writes `kg` always. The column is retained so adding pounds later is a UI change, not a migration of every load in history |
 | `timezone` | text NOT NULL | IANA name. Drives FR-026 and FR-050 |
 | `bodyweight_kg` | numeric(5,2) NULL | For bodyweight exercise volume (FR-042) |
-| `weekly_target_sessions` | smallint NULL | FR-045 |
+| `weekly_target_sessions` | smallint NULL | **Not used in v1.** Q-004 closed: the weekly target is derived from `workouts.scheduled_weekdays` with Sanctioned Skips removed, so there is no number to store. Kept nullable for a future target that is independent of the schedule |
 | `failed_login_count` | smallint DEFAULT 0 | FR-008 |
 | `locked_until` | timestamptz NULL | FR-008 |
 | `created_at` / `updated_at` | timestamptz | |
@@ -190,7 +190,9 @@ they were performed, so past targets are never rewritten.
 | `program_revision_id` | uuid FK SET NULL | The prescription snapshot in force (FR-030) |
 | `performed_on` | date NOT NULL | User's local date, not UTC |
 | `started_at` / `ended_at` | timestamptz | `ended_at` null means in progress (FR-037) |
-| `status` | enum(`in_progress`,`completed`,`abandoned`) | |
+| `status` | enum(`in_progress`,`completed`,`abandoned`,`skipped`) | `skipped` is a deliberate record that this scheduled day was not trained (FR-039). It is not the same as no row at all, which means the day was simply missed |
+| `skip_reason` | enum(`coach_instructed`,`planned_rest`,`illness_injury`,`travel`,`other`) NULL | Required when `status` is `skipped`, null otherwise. `coach_instructed` and `planned_rest` are Sanctioned Skips and are removed from the adherence denominator rather than counted as failures (FR-046) |
+| `skip_note` | text NULL | Free text, for example "coach said rest the shoulder" |
 | `total_volume_kg` | numeric(10,2) | Denormalized on completion, for fast charts |
 | `note` | text NULL | FR-011 |
 | `client_updated_at` | timestamptz NOT NULL | Conflict resolution input (FR-036) |

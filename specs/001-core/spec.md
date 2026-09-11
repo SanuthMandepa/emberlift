@@ -59,6 +59,8 @@ becomes bugs later.
 | **Personal Record (PR)** | The athlete's best ever performance on an exercise, tracked as heaviest load and as best estimated one rep maximum. |
 | **Volume** | Sets multiplied by reps multiplied by load, summed over a period. The primary measure of training work. |
 | **Program Revision** | A versioned snapshot of a Program. When a coach changes sets or load, a new revision is created and the old one is preserved. |
+| **Skipped Session** | A scheduled training day the athlete did not perform, recorded deliberately with a reason. Distinct from a day simply left blank, which is a missed day. |
+| **Sanctioned Skip** | A Skipped Session whose reason is "coach instructed" or "planned rest". It does not count against adherence or break a streak. Any other reason does. |
 
 ## 4. User Stories
 
@@ -83,6 +85,7 @@ Priority: **P1** ships in v1. **P2** ships in v1 if capacity allows. **P3** is a
 - **B6 (P1)** As an athlete whose coach changed the plan, I can edit a Workout's targets, and the app records that the plan changed on that date without destroying what I did before the change.
 - **B7 (P1)** As an athlete, I can assign Workouts to days of the week, so the app knows that Monday is Push day.
 - **B8 (P2)** As an athlete, I can duplicate an existing Program as a starting point for a new one.
+- **B9 (P1)** As an athlete whose coach just handed me a list, I can type or paste that whole list in the shorthand the coach wrote it in, for example "Bench 3x8 60", and the app turns it into a Workout I can check off, so that entering a plan takes under a minute instead of a form per exercise.
 
 ### Epic C: Doing the workout
 
@@ -99,6 +102,7 @@ Priority: **P1** ships in v1. **P2** ships in v1 if capacity allows. **P3** is a
 - **C11 (P2)** As an athlete, I can attach a note to a set or a Session, for example "left shoulder pinched".
 - **C12 (P2)** As an athlete at a barbell, I can see which plates to load for a target weight.
 - **C13 (P2)** As an athlete, I get a nudge if I have been idle for longer than my rest period, so that sessions do not drag.
+- **C14 (P1)** As an athlete whose coach told me to skip a day, I can mark that day as skipped with the reason, and it does not count against me, so that following my coach's instruction is not punished by the app.
 
 ### Epic D: Seeing progress and finding weak areas
 
@@ -106,7 +110,7 @@ Priority: **P1** ships in v1. **P2** ships in v1 if capacity allows. **P3** is a
 - **D2 (P1)** As an athlete, I am told immediately when I set a personal record, during the session and not afterwards.
 - **D3 (P1)** As an athlete, I can see total training volume per week and per muscle group.
 - **D4 (P1)** As an athlete, I can see which muscle groups I have trained least over the last 30 days, so I know what I am neglecting. This is the "areas for improvement" view.
-- **D5 (P1)** As an athlete, I can see my current streak of weeks in which I hit my training target.
+- **D5 (P1)** As an athlete, I can see my current streak of weeks in which I completed the sessions I was scheduled to do, with days my coach told me to skip excluded rather than counted as failures.
 - **D6 (P1)** As an athlete, I am shown a suggested target for my next session on each exercise, based on what I actually did previously, so I progress instead of repeating the same weight forever.
 - **D7 (P2)** As an athlete, I am warned when my weekly volume jumps far above my recent average, because that is how people get injured.
 - **D8 (P2)** As an athlete, I can see adherence: the percentage of prescribed sets I actually completed, per week.
@@ -166,6 +170,9 @@ Each requirement is testable per Constitution Article II.
 | FR-024 | A built in exercise catalog is available | The catalog contains at least 120 exercises, each with a name, primary muscle group, secondary muscle groups, equipment type, and an illustrative image |
 | FR-025 | Users can create custom exercises | A custom exercise is visible only to its creator and behaves identically to a catalog exercise everywhere else |
 | FR-026 | Workouts can be scheduled to days of the week | The home screen shows the Workout scheduled for the current day in the user's local timezone |
+| FR-027 | A Workout can be created by typing or pasting a plain text list in coach shorthand | Given the input `Bench 3x8 60`, `Incline DB press 3x10-12 22.5`, `Lat pulldown 4x12 45kg`, the app produces three Prescribed Exercises with correct sets, rep targets and loads. Rep ranges, missing loads, and a trailing unit are all parsed. Nothing is saved until the user confirms a preview |
+| FR-028 | Unmatched exercise names in a pasted list are surfaced, never guessed silently | Each parsed line shows the catalog exercise it matched. A line that matches nothing is flagged and offers to create a custom exercise or pick manually. A low confidence match is shown as a choice, not applied |
+| FR-029 | Loads are entered and displayed in kilograms | All input, display and export uses kg in v1. The stored unit is kg everywhere (Q-002) |
 
 ### Sessions and logging
 
@@ -180,6 +187,7 @@ Each requirement is testable per Constitution Article II.
 | FR-036 | Conflicting offline edits resolve deterministically | Last write wins per Logged Set, using the client timestamp, with the losing value retained in an audit field |
 | FR-037 | An interrupted Session is resumable | Force closing the app mid Session and reopening restores the exact scroll position, active exercise, and elapsed time |
 | FR-038 | Session completion produces a summary | Summary shows duration, total volume, sets completed against planned, per exercise variance, and PRs achieved |
+| FR-039 | A scheduled training day can be marked as skipped, with a reason | Reasons are: coach instructed, planned rest, illness or injury, travel, other. A skipped day is visibly distinct on the home screen and in history from a day that was simply never opened |
 
 ### Progress and insight
 
@@ -190,7 +198,9 @@ Each requirement is testable per Constitution Article II.
 | FR-042 | Volume is computed per exercise, per muscle group, and per week | Volume for a set is reps multiplied by load. Bodyweight exercises use a configured bodyweight value |
 | FR-043 | The app identifies under trained muscle groups | The "areas for improvement" view ranks muscle groups by total sets over the last 30 days and flags any trained fewer than a configurable threshold |
 | FR-044 | The app suggests the next target per exercise | Suggestion is derived only from the user's own logged history, states the rule that produced it in plain language, and is always overridable |
-| FR-045 | Streaks are computed against a user set weekly training target | A week counts toward the streak when completed Sessions meet or exceed the target. Weeks marked as deliberate rest do not break the streak |
+| FR-045 | Streaks are computed against the sessions actually scheduled that week, not a separate target number | A week counts toward the streak when every scheduled Session was either completed or recorded as a Sanctioned Skip. There is no "rest week" concept (Q-003) |
+| FR-046 | A Sanctioned Skip is excluded from the denominator, not counted as a failure | A week with three scheduled days, two completed and one skipped because the coach instructed it, scores 2 of 2 and the streak continues. The same week with one day simply left blank scores 2 of 3 and the streak breaks |
+| FR-047 | Skip reasons are visible in history and in adherence | The adherence view distinguishes completed, sanctioned skip, unsanctioned skip, and missed. A user can see why a day has no session without remembering |
 
 ### Reminders
 
@@ -251,14 +261,16 @@ Recorded so they are not silently reintroduced:
 
 ## 8. Open Questions
 
-These block the plan being finalized. Per Constitution Article I they must be answered, not guessed.
+Per Constitution Article I these must be answered, not guessed. **All open questions
+are now closed.** The remaining blocker on implementation is product owner approval of
+this specification in section 9.
 
 | ID | Question | Owner | Status |
 |---|---|---|---|
 | Q-001 | Final app name and GitHub repository name, and public or private visibility | Product owner | **CLOSED 2026-09-11.** Name is Emberlift, repository `emberlift`, public |
-| Q-002 | Default unit: kilograms or pounds | Product owner | Proposed: kilograms, user switchable |
-| Q-003 | Should a deliberate "rest week" be a first class concept in streak calculation | Product owner | Proposed: yes, FR-045 assumes it |
-| Q-004 | Is a weekly training target set by the user, or inferred from their schedule | Product owner | Proposed: inferred from scheduled days, user overridable |
+| Q-002 | Default unit: kilograms or pounds | Product owner | **CLOSED 2026-09-11.** Kilograms. v1 is kg only, no unit switcher. See FR-029 |
+| Q-003 | Should a deliberate "rest week" be a first class concept in streak calculation | Product owner | **CLOSED 2026-09-11.** No. There is no rest week. The real case is the coach saying to skip a single day, which is modelled as a Skipped Session with a reason. See FR-039, FR-045, FR-046 |
+| Q-004 | Is a weekly training target set by the user, or inferred from their schedule | Product owner | **CLOSED 2026-09-11.** Resolved by the answer to Q-003 rather than asked separately. The target is simply the days scheduled that week, with Sanctioned Skips removed from the denominator. No separate target number to configure. Raise this again if a target independent of the schedule turns out to be wanted |
 
 ## 9. Success Criteria
 
