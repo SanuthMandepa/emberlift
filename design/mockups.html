@@ -1,0 +1,994 @@
+<title>Reps Interface Kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Chivo+Mono:wght@300;400;600&display=swap">
+
+<style>
+/* =========================================================================
+   REPS - Interface kit
+   Single committed visual world: a dark instrument panel. Painted explicitly
+   so it holds on either host ground.
+   ========================================================================= */
+
+:root{
+  /* Ground: green-biased graphite, not blue-black, so the volt accent sits in
+     the same hue family as its neutral instead of fighting it. */
+  --void:    #0B0D0C;
+  --steel:   #141816;
+  --rack:    #1D2321;
+  --edge:    #2B322E;
+  --edge-hi: #3C453F;
+
+  --chalk:   #F1F4EC;   /* warm white, the colour of lifting chalk */
+  --smoke:   #939C93;
+  --dim:     #656E67;
+
+  --volt:    #C7F73E;   /* live state + achievement ONLY. Never decoration. */
+  --volt-dk: #8FB821;
+  --flare:   #FF6B2C;   /* personal records, heat, attention */
+  --ice:     #5CD9E8;   /* rest, recovery, time */
+  --blood:   #E8484A;   /* deload warning, destructive */
+
+  --f-disp: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --f-body: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --f-mono: 'Chivo Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* Barbell knurling: the crosshatch cut into a bar where your hands go. */
+  --knurl: repeating-linear-gradient(45deg, rgba(255,255,255,.035) 0 1px, transparent 1px 5px),
+           repeating-linear-gradient(-45deg, rgba(255,255,255,.035) 0 1px, transparent 1px 5px);
+}
+
+*{box-sizing:border-box}
+
+body{
+  background:var(--void);
+  color:var(--chalk);
+  font-family:var(--f-body);
+  font-size:15px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  padding-inline:20px;
+  padding-block:0 72px;
+}
+
+.wrap{max-width:1240px;margin:0 auto}
+
+/* ---------- Page header ---------------------------------------------- */
+
+.masthead{
+  border-bottom:1px solid var(--edge);
+  padding-block:34px 26px;
+  margin-bottom:34px;
+}
+.eyebrow{
+  font-family:var(--f-mono);
+  font-size:11px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--dim);
+  margin:0 0 14px;
+}
+h1{
+  font-family:var(--f-disp);
+  font-variation-settings:'wdth' 122,'wght' 800;
+  font-size:clamp(38px,7vw,62px);
+  line-height:.94;
+  letter-spacing:-.02em;
+  margin:0 0 16px;
+  text-wrap:balance;
+  text-transform:uppercase;
+}
+h1 em{font-style:normal;color:var(--volt)}
+.standfirst{
+  max-width:62ch;
+  color:var(--smoke);
+  font-size:16px;
+  margin:0;
+}
+
+/* ---------- Spec strip: the tokens, as a real deliverable -------------- */
+
+.spec{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:0;
+  border:1px solid var(--edge);
+  margin-bottom:44px;
+}
+.spec > div{
+  padding:18px 20px;
+  border-right:1px solid var(--edge);
+  border-bottom:1px solid var(--edge);
+}
+.spec > div:last-child{border-right:0}
+.spec h2{
+  font-family:var(--f-mono);
+  font-size:10px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--dim);
+  margin:0 0 12px;
+  font-weight:400;
+}
+.swatches{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.swatches li{width:34px}
+.swatches i{display:block;height:34px;border-radius:2px;border:1px solid rgba(255,255,255,.1)}
+.swatches b{
+  display:block;font-family:var(--f-mono);font-size:8px;color:var(--dim);
+  margin-top:5px;letter-spacing:.04em;font-weight:400;
+}
+.typerow{margin:0 0 10px}
+.typerow:last-child{margin-bottom:0}
+.typerow span{
+  display:block;font-family:var(--f-mono);font-size:9px;color:var(--dim);
+  letter-spacing:.12em;text-transform:uppercase;
+}
+.t-disp{font-family:var(--f-disp);font-variation-settings:'wdth' 120,'wght' 800;font-size:24px;line-height:1.1;text-transform:uppercase}
+.t-body{font-family:var(--f-body);font-size:15px}
+.t-mono{font-family:var(--f-mono);font-size:14px;font-variant-numeric:tabular-nums}
+.rule-list{margin:0;padding:0;list-style:none;font-size:13px;color:var(--smoke)}
+.rule-list li{padding-left:14px;position:relative;margin-bottom:6px}
+.rule-list li::before{content:'';position:absolute;left:0;top:8px;width:5px;height:5px;background:var(--volt)}
+.rule-list li:last-child{margin-bottom:0}
+
+/* ---------- Screen gallery -------------------------------------------- */
+
+.flowlabel{
+  display:flex;align-items:baseline;gap:14px;
+  font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--dim);
+  margin:0 0 22px;
+}
+.flowlabel::after{content:'';flex:1;height:1px;background:var(--edge)}
+
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:40px 28px;
+  margin-bottom:56px;
+}
+
+figure{margin:0;display:flex;flex-direction:column;gap:14px}
+
+.phone{
+  width:100%;max-width:320px;
+  aspect-ratio:320/660;
+  background:var(--steel);
+  border:1px solid var(--edge-hi);
+  border-radius:26px;
+  padding:7px;
+  position:relative;
+  box-shadow:0 18px 40px -18px #000, inset 0 1px 0 rgba(255,255,255,.06);
+}
+.scr{
+  height:100%;width:100%;
+  background:var(--void);
+  border-radius:19px;
+  overflow:hidden;
+  position:relative;
+  display:flex;flex-direction:column;
+  font-size:12px;
+}
+.bar{
+  height:22px;flex:0 0 22px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 14px;
+  font-family:var(--f-mono);font-size:9px;color:var(--smoke);
+  letter-spacing:.03em;
+}
+.bar .pill{width:38px;height:4px;border-radius:2px;background:var(--edge)}
+.body{flex:1;overflow:hidden;padding:10px 14px;display:flex;flex-direction:column;gap:10px}
+.body.flush{padding:0}
+.body.mid{justify-content:center;align-items:center;text-align:center}
+
+figcaption{display:flex;flex-direction:column;gap:5px}
+.cap-h{display:flex;align-items:baseline;gap:9px}
+.cap-n{font-family:var(--f-mono);font-size:11px;color:var(--volt);font-variant-numeric:tabular-nums}
+.cap-t{font-family:var(--f-disp);font-variation-settings:'wdth' 112,'wght' 700;font-size:15px;text-transform:uppercase;letter-spacing:.01em}
+.cap-d{font-size:12.5px;color:var(--smoke);margin:0;line-height:1.45}
+.reqs{font-family:var(--f-mono);font-size:9.5px;color:var(--dim);letter-spacing:.06em}
+
+/* ---------- In-screen primitives -------------------------------------- */
+
+.k-label{font-family:var(--f-mono);font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.num{font-family:var(--f-disp);font-variation-settings:'wdth' 118,'wght' 800;font-variant-numeric:tabular-nums;line-height:.9;letter-spacing:-.01em}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+
+.card{background:var(--steel);border:1px solid var(--edge);border-radius:10px;padding:11px}
+.card.lift{background:var(--rack)}
+
+.btn{
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  height:42px;border-radius:9px;border:0;
+  background:var(--volt);color:#0B0D0C;
+  font-family:var(--f-disp);font-variation-settings:'wdth' 112,'wght' 800;
+  font-size:13px;text-transform:uppercase;letter-spacing:.06em;
+  width:100%;
+}
+.btn.ghost{background:transparent;border:1px solid var(--edge-hi);color:var(--chalk)}
+.btn.sm{height:32px;font-size:11px}
+
+.field{border:1px solid var(--edge);border-radius:9px;padding:8px 11px;background:var(--steel)}
+.field .k-label{display:block;margin-bottom:2px}
+.field .val{color:var(--chalk);font-size:12.5px}
+.field .val.ph{color:var(--dim)}
+
+.nav{
+  flex:0 0 50px;display:grid;grid-template-columns:repeat(4,1fr);
+  border-top:1px solid var(--edge);background:var(--steel);
+}
+.nav div{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--dim);font-size:8.5px;letter-spacing:.05em;text-transform:uppercase;font-family:var(--f-mono)}
+.nav div.on{color:var(--volt)}
+.nav svg{width:17px;height:17px}
+
+.chip{
+  display:inline-flex;align-items:center;gap:5px;
+  font-family:var(--f-mono);font-size:9px;letter-spacing:.07em;text-transform:uppercase;
+  padding:3px 7px;border-radius:4px;border:1px solid var(--edge-hi);color:var(--smoke);
+}
+.chip.volt{color:var(--volt);border-color:rgba(199,247,62,.35);background:rgba(199,247,62,.07)}
+.chip.flare{color:var(--flare);border-color:rgba(255,107,44,.35);background:rgba(255,107,44,.08)}
+.chip.ice{color:var(--ice);border-color:rgba(92,217,232,.3);background:rgba(92,217,232,.07)}
+
+.row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.stack{display:flex;flex-direction:column;gap:8px}
+.tile{flex:1;background:var(--steel);border:1px solid var(--edge);border-radius:9px;padding:9px 10px}
+
+/* Exercise demo tile: stands in for the photographic demo in production */
+.demo{
+  width:56px;height:56px;flex:0 0 56px;border-radius:8px;
+  background:var(--rack);background-image:var(--knurl);
+  border:1px solid var(--edge);
+  display:flex;align-items:center;justify-content:center;color:var(--smoke);
+}
+.demo svg{width:32px;height:32px}
+
+/* Set rows: the single most-used component in the product */
+.set{
+  display:grid;grid-template-columns:18px 1fr 1fr 30px;align-items:center;gap:8px;
+  padding:7px 9px;border-radius:8px;border:1px solid var(--edge);background:var(--steel);
+}
+.set.done{border-color:rgba(199,247,62,.22);background:rgba(199,247,62,.05)}
+.set.live{border-color:var(--volt);background:rgba(199,247,62,.09);box-shadow:0 0 0 1px rgba(199,247,62,.25)}
+.set .idx{font-family:var(--f-mono);font-size:10px;color:var(--dim)}
+.set.done .idx,.set.live .idx{color:var(--volt)}
+.set .v{font-family:var(--f-disp);font-variation-settings:'wdth' 115,'wght' 700;font-size:15px;font-variant-numeric:tabular-nums}
+.set .u{font-family:var(--f-mono);font-size:8.5px;color:var(--dim);margin-left:3px}
+.set .tick{width:24px;height:24px;border-radius:6px;border:1px solid var(--edge-hi);display:flex;align-items:center;justify-content:center;color:var(--dim)}
+.set.done .tick{background:var(--volt);border-color:var(--volt);color:#0B0D0C}
+.set.live .tick{border-color:var(--volt);color:var(--volt)}
+.set .tick svg{width:13px;height:13px}
+
+/* Bars used for muscle balance and weekly volume */
+.bars{display:flex;flex-direction:column;gap:7px}
+.barrow{display:grid;grid-template-columns:52px 1fr 30px;align-items:center;gap:8px;font-size:10px}
+.barrow .track{height:7px;border-radius:4px;background:var(--edge);overflow:hidden}
+.barrow .fill{height:100%;border-radius:4px;background:var(--volt-dk)}
+.barrow .fill.low{background:var(--flare)}
+.barrow .n{font-family:var(--f-mono);font-size:9.5px;color:var(--smoke);text-align:right;font-variant-numeric:tabular-nums}
+.barrow .g{color:var(--smoke)}
+
+.toggle{width:34px;height:19px;border-radius:10px;background:var(--edge);position:relative;flex:0 0 34px}
+.toggle::after{content:'';position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:var(--dim)}
+.toggle.on{background:var(--volt)}
+.toggle.on::after{left:auto;right:2px;background:#0B0D0C}
+
+.divider{height:1px;background:var(--edge);margin:2px 0}
+
+/* ---------- Animated moments: only where the product is genuinely live -- */
+
+.boot-track{width:132px;height:2px;background:var(--edge);border-radius:2px;overflow:hidden}
+.boot-fill{height:100%;width:38%;background:var(--volt);animation:boot 2.1s cubic-bezier(.4,0,.2,1) infinite}
+@keyframes boot{0%{width:6%}70%{width:88%}100%{width:100%}}
+
+.ring-prog{
+  stroke-dasharray:283;
+  stroke-dashoffset:70;
+  animation:tick 6s linear infinite;
+}
+@keyframes tick{from{stroke-dashoffset:24}to{stroke-dashoffset:283}}
+
+.pr-glow{animation:pr 2.6s ease-in-out infinite}
+@keyframes pr{0%,100%{box-shadow:0 0 0 0 rgba(255,107,44,.32)}50%{box-shadow:0 0 0 7px rgba(255,107,44,0)}}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none !important;transition:none !important}
+  .boot-fill{width:62%}
+  .ring-prog{stroke-dashoffset:96}
+}
+
+/* ---------- Alternate colourways --------------------------------------- */
+
+.alts{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px}
+.alt{border:1px solid var(--edge);border-radius:12px;padding:16px;background:var(--steel)}
+.alt h3{font-family:var(--f-disp);font-variation-settings:'wdth' 112,'wght' 700;font-size:14px;text-transform:uppercase;margin:0 0 4px;letter-spacing:.02em}
+.alt p{font-size:12.5px;color:var(--smoke);margin:0 0 13px;line-height:1.45}
+.alt .prev{border-radius:9px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.alt .prev .lg{font-family:var(--f-disp);font-variation-settings:'wdth' 118,'wght' 800;font-size:30px;line-height:.9;font-variant-numeric:tabular-nums}
+.alt .prev .bt{height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:var(--f-disp);font-variation-settings:'wdth' 110,'wght' 800;font-size:10.5px;text-transform:uppercase;letter-spacing:.07em}
+
+/* ---------- Footer note ------------------------------------------------ */
+
+.note{
+  border-left:2px solid var(--volt);
+  padding:2px 0 2px 16px;
+  margin-top:48px;
+  max-width:64ch;
+  color:var(--smoke);
+  font-size:13.5px;
+}
+.note strong{color:var(--chalk);font-weight:600}
+
+@media (max-width:430px){
+  .gallery{grid-template-columns:1fr;justify-items:center}
+  figure{width:100%;max-width:320px}
+  .spec > div{border-right:0}
+}
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">Reps &middot; 001-core &middot; design direction 01</p>
+    <h1>Steel, chalk<br>and a <em>running clock</em></h1>
+    <p class="standfirst">
+      A training log is an instrument, not a magazine. These ten screens treat it that way:
+      a dark panel, tabular numerals you can read at arm's length, and a single volt accent
+      that is spent only on two things, what is live right now and what you just beat.
+      Every screen names the requirements it satisfies, so the design can be reviewed against
+      the spec rather than against taste.
+    </p>
+  </header>
+
+  <section class="spec" aria-label="Design tokens">
+    <div>
+      <h2>Palette</h2>
+      <ul class="swatches">
+        <li><i style="background:#0B0D0C"></i><b>void</b></li>
+        <li><i style="background:#1D2321"></i><b>rack</b></li>
+        <li><i style="background:#F1F4EC"></i><b>chalk</b></li>
+        <li><i style="background:#C7F73E"></i><b>volt</b></li>
+        <li><i style="background:#FF6B2C"></i><b>flare</b></li>
+        <li><i style="background:#5CD9E8"></i><b>ice</b></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Typography</h2>
+      <div class="typerow"><span>Display &middot; Archivo Expanded 800</span><div class="t-disp">62.5 kg &times; 8</div></div>
+      <div class="typerow"><span>Body &middot; Archivo 400</span><div class="t-body">Barbell Bench Press</div></div>
+      <div class="typerow"><span>Data &middot; Chivo Mono 400</span><div class="t-mono">EST 1RM 78.1</div></div>
+    </div>
+    <div>
+      <h2>Colour discipline</h2>
+      <ul class="rule-list">
+        <li><b>Volt</b> means live or achieved. Nothing else.</li>
+        <li><b>Flare</b> means a record, or an area falling behind.</li>
+        <li><b>Ice</b> means time: rest, recovery, clocks.</li>
+        <li>State never rides on colour alone. Every one carries an icon or a word.</li>
+      </ul>
+    </div>
+    <div>
+      <h2>Gym floor rules</h2>
+      <ul class="rule-list">
+        <li>Log a set in one tap, thumb reach, 48px minimum.</li>
+        <li>Numerals are tabular so weights line up down a column.</li>
+        <li>Nothing on the session screen waits on the network.</li>
+        <li>Readable at arm's length under bad gym lighting.</li>
+      </ul>
+    </div>
+  </section>
+
+  <p class="flowlabel">The flow, in order</p>
+
+  <div class="gallery">
+
+    <!-- 01 BOOT ------------------------------------------------------- -->
+    <figure>
+      <div class="phone"><div class="scr">
+        <div class="bar"><span>9:41</span><span class="pill"></span><span>100%</span></div>
+        <div class="body mid" style="gap:0">
+          <svg viewBox="0 0 44 44" width="44" height="44" aria-hidden="true" style="margin-bottom:20px">
+            <g fill="none" stroke="#C7F73E" stroke-width="2.4" stroke-linecap="round">
+              <path d="M4 22h4M36 22h4"/>
+              <rect x="9" y="13" width="4" height="18" rx="1.6"/>
+              <rect x="31" y="13" width="4" height="18" rx="1.6"/>
+              <path d="M13 22h18"/>
+            </g>
+          </svg>
+          <div class="num" style="font-size:40px;letter-spacing:.02em">REPS</div>
+          <div class="k-label" style="margin:9px 0 26px">Train. Log. Beat it.</div>
+          <div class="boot-track"><div class="boot-fill"></div></div>
+          <div class="mono" style="font-size:8.5px;color:var(--dim);margin-top:13px;letter-spacing:.1em">LOADING YOUR PLAN</div>
+        </div>
+      </div></div>
+      <figcaption>
+        <div class="cap-h"><span class="cap-n">01</span><span class="cap-t">Boot</span></div>
+        <p class="cap-d">Shows from first paint until the app is interactive. No flash of unstyled content, and it doubles as the home screen splash once installed.</p>
+        <span class="reqs">FR-070 &middot; FR-071</span>
+      </figcaption>
+    </figure>
+
+    <!-- 02 SIGN IN ---------------------------------------------------- -->
+    <figure>
+      <div class="phone"><div class="scr">
+        <div class="bar"><span>9:41</span><span class="pill"></span><span>100%</span></div>
+        <div class="body" style="justify-content:center;gap:12px">
+          <div class="num" style="font-size:26px;margin-bottom:2px">Welcome<br>back</div>
+          <div class="field"><span class="k-label">Email</span><div class="val">sanuth@example.com</div></div>
+          <div class="field" style="border-color:var(--volt-dk)"><span class="k-label">Password</span><div class="val mono">&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</div></div>
+          <button class="btn" type="button">Sign in</button>
+          <div style="text-align:center;color:var(--smoke);font-size:11px">Forgot your password?</div>
+          <div class="divider" style="margin:6px 0"></div>
+          <button class="btn ghost sm" type="button">Create an account</button>
+          <div class="row" style="justify-content:center;gap:6px;margin-top:8px">
+            <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#939C93" stroke-width="2" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+            <span class="mono" style="font-size:8px;color:var(--dim);letter-spacing:.08em">ARGON2ID &middot; ROTATING SESSIONS</span>
+          </div>
+        </div>
+      </div></div>
+      <figcaption>
+        <div class="cap-h"><span class="cap-n">02</span><span class="cap-t">Sign in</span></div>
+        <p class="cap-d">Deliberately boring, which is what a credential screen should be. The footer states how passwords are held, because a user who is told is a user who trusts.</p>
+        <span class="reqs">FR-001 &middot; FR-003 &middot; FR-005 &middot; FR-008</span>
+      </figcaption>
+    </figure>
+
+    <!-- 03 TODAY ------------------------------------------------------ -->
+    <figure>
+      <div class="phone"><div class="scr">
+        <div class="bar"><span>9:41</span><span class="pill"></span><span>100%</span></div>
+        <div class="body">
+          <div class="row">
+            <div>
+              <div class="k-label">Thursday 11 September</div>
+              <div class="num" style="font-size:19px;margin-top:4px">Push day</div>
+            </div>
+            <span class="chip volt">Week 6</span>
+          </div>
+
+          <div class="card lift" style="background-image:var(--knurl)">
+            <div class="row" style="align-items:flex-start">
+              <div>
+                <div class="k-label">Coach PPL &middot; rev 4</div>
+                <div class="num" style="font-size:17px;margin-top:5px">Day A &middot; Push</div>
+                <div class="mono" style="font-size:9.5px;color:var(--smoke);margin-top:6px">6 EXERCISES &middot; 18 SETS &middot; ~52 MIN</div>
+              </div>
+              <span class="chip ice">18:30</span>
+            </div>
+            <button class="btn" type="button" style="margin-top:11px">Start session</button>
+          </div>
+
+          <div class="card">
+            <div class="row" style="margin-bottom:8px">
+              <span class="k-label">Streak</span>
+              <span class="mono" style="font-size:10px;color:var(--volt)">5 WEEKS</span>
+            </div>
+            <div class="row" style="gap:4px">
+              <span class="mono" style="font-size:8px;color:var(--volt)">M</span>
+              <span class="mono" style="font-size:8px;color:var(--volt)">T</span>
+              <span class="mono" style="font-size:8px;color:var(--volt)">W</span>
+              <span class="mono" style="font-size:8px;color:var(--chalk)">T</span>
+              <span class="mono" style="font-size:8px;color:var(--dim)">F</span>
+              <span class="mono" style="font-size:8px;color:var(--dim)">S</span>
+              <span class="mono" style="font-size:8px;color:var(--dim)">S</span>
+            </div>
+            <div class="row" style="gap:4px;margin-top:5px">
+              <i style="flex:1;height:5px;border-radius:3px;background:var(--volt)"></i>
+              <i style="flex:1;height:5px;border-radius:3px;background:var(--edge)"></i>
+              <i style="flex:1;height:5px;border-radius:3px;background:var(--volt)"></i>
+              <i style="flex:1;height:5px;border-radius:3px;background:var(--edge-hi);outline:1px solid var(--volt)"></i>
+              <i style="flex:1;height:5px;border-radius:3px;background:var(--edge)"></i>
+              <i style="flex:1;height:5px;border-radius:3px;background:var(--volt)"></i>
+              <i style="flex:1;height:5px;border-radius:3px;background:var(--edge)"></i>
+            </div>
+          </div>
+
+          <div class="row" style="gap:8px">
+            <div class="tile"><div class="k-label">This week</div><div class="num" style="font-size:18px;margin-top:5px">14.2<span class="u mono" style="font-size:8px;color:var(--dim)">t</span></div><div class="mono" style="font-size:8.5px;color:var(--volt);margin-top:3px">+8% VS AVG</div></div>
+            <div class="tile"><div class="k-label">Records</div><div class="num" style="font-size:18px;margin-top:5px">3</div><div class="mono" style="font-size:8.5px;color:var(--smoke);margin-top:3px">THIS MONTH</div></div>
+          </div>
+        </div>
+        <div class="nav">
+          <div class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Today</div>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h8M8 17h4"/></svg>Plan</div>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 18V10M10 18V5M16 18v-6M22 18V8"/></svg>Progress</div>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>You</div>
+        </div>
+      </div></div>
+      <figcaption>
+        <div class="cap-h"><span class="cap-n">03</span><span class="cap-t">Today</span></div>
+        <p class="cap-d">Opens on the one thing that matters when you walk in: what you are doing now, and a button to start it. Streak dots read as a week, not a trophy.</p>
+        <span class="reqs">FR-026 &middot; FR-045 &middot; C1</span>
+      </figcaption>
+    </figure>
+
+    <!-- 04 ACTIVE SESSION --------------------------------------------- -->
+    <figure>
+      <div class="phone"><div class="scr">
+        <div class="bar"><span>9:41</span><span class="pill"></span><span>100%</span></div>
+        <div class="body" style="gap:9px">
+          <div class="row">
+            <span class="chip volt">&#9679; Live &middot; 24:18</span>
+            <span class="mono" style="font-size:9px;color:var(--smoke)">4 / 18 SETS</span>
+          </div>
+
+          <div class="row" style="gap:10px;align-items:center">
+            <div class="demo">
+              <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+                <path d="M2 13h3M27 13h3"/>
+                <rect x="5.5" y="8" width="3" height="10" rx="1"/>
+                <rect x="23.5" y="8" width="3" height="10" rx="1"/>
+                <path d="M8.5 13h15"/>
+                <path d="M6 25h20M11 25v-3M21 25v-3"/>
+              </svg>
+            </div>
+            <div style="flex:1;min-width:0">
+              <div class="num" style="font-size:15px;line-height:1.05">Barbell<br>Bench Press</div>
+              <div class="mono" style="font-size:9px;color:var(--smoke);margin-top:5px">3 &times; 8 @ 60.0 KG &middot; REST 90S</div>
+            </div>
+          </div>
+
+          <div class="stack" style="gap:6px">
+            <div class="set done">
+              <span class="idx">1</span>
+              <span><span class="v">8</span><span class="u">reps</span></span>
+              <span><span class="v">60.0</span><span class="u">kg</span></span>
+              <span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l6 6L20 6"/></svg></span>
+            </div>
+            <div class="set done">
+              <span class="idx">2</span>
+              <span><span class="v">8</span><span class="u">reps</span></span>
+              <span><span class="v">60.0</span><span class="u">kg</span></span>
+              <span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l6 6L20 6"/></svg></span>
+            </div>
+            <div class="set live">
+              <span class="idx">3</span>
+              <span><span class="v">8</span><span class="u">reps</span></span>
+              <span><span class="v">62.5</span><span class="u">kg</span></span>
+              <span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="12" cy="12" r="8"/></svg></span>
+            </div>
+          </div>
+
+          <div class="card" style="border-color:rgba(199,247,62,.22);background:rgba(199,247,62,.05);padding:9px 10px">
+            <div class="row" style="align-items:flex-start;gap:8px">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#C7F73E" stroke-width="2.2" style="flex:0 0 13px;margin-top:1px" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+              <div>
+                <div style="font-size:11px;color:var(--chalk);line-height:1.35">Try <b class="mono" style="color:var(--volt)">62.5 kg</b> today</div>
+                <div style="font-size:9.5px;color:var(--smoke);line-height:1.4;margin-top:2px">You hit all 3 sets of 8 at 60 kg last Thursday.</div>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn" type="button" style="margin-top:auto">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l6 6L20 6"/></svg>
+            Log set 3
+          </button>
+          <div class="row" style="gap:6px">
+            <button class="btn ghost sm" type="button" style="flex:1">Adjust</button>
+            <button class="btn ghost sm" type="button" style="flex:1">Add set</button>
+            <button class="btn ghost sm" type="button" style="flex:1">Skip</button>
+          </div>
+        </div>
+      </div></div>
+      <figcaption>
+        <div class="cap-h"><span class="cap-n">04</span><span class="cap-t">Active session</span></div>
+        <p class="cap-d">The screen the whole product exists for. Prescribed values are pre-filled, so the common case is one thumb tap. Adjust, add and skip stay one tap away without competing for attention.</p>
+        <span class="reqs">FR-030 &middot; FR-031 &middot; FR-032 &middot; FR-033 &middot; FR-044</span>
+      </figcaption>
+    </figure>
+
+    <!-- 05 REST + PR -------------------------------------------------- -->
+    <figure>
+      <div class="phone"><div class="scr">
+        <div class="bar"><span>9:41</span><span class="pill"></span><span>100%</span></div>
+        <div class="body" style="gap:12px">
+          <div class="card pr-glow" style="border-color:rgba(255,107,44,.45);background:rgba(255,107,44,.09);padding:12px">
+            <div class="row">
+              <span class="chip flare">&#9733; New record</span>
+              <span class="mono" style="font-size:9px;color:var(--flare)">+2.5 KG</span>
+            </div>
+            <div class="num" style="font-size:15px;margin-top:9px">Barbell Bench Press</div>
+            <div class="row" style="margin-top:9px;align-items:flex-end">
+              <div><div class="k-label">Heaviest set</div><div class="num" style="font-size:26px;margin-top:3px;color:var(--flare)">62.5<span class="u mono" style="font-size:10px">kg &times; 8</span></div></div>
+              <div style="text-align:right"><div class="k-label">Est. 1RM</div><div class="num mono" style="font-size:15px;margin-top:4px">78.1</div></div>
+            </div>
+            <div class="mono" style="font-size:8px;color:var(--smoke);margin-top:8px;letter-spacing:.05em">EPLEY ESTIMATE &middot; PREVIOUS BEST 60.0 KG &times; 8</div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:2px">
+            <div style="position:relative;width:126px;height:126px">
+              <svg viewBox="0 0 100 100" width="126" height="126" aria-hidden="true" style="transform:rotate(-90deg)">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="#2B322E" stroke-width="5"/>
+                <circle class="ring-prog" cx="50" cy="50" r="45" fill="none" stroke="#5CD9E8" stroke-width="5" stroke-linecap="round"/>
+              </svg>
+              <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+                <div class="num" style="font-size:30px;color:var(--ice)">0:47</div>
+                <div class="k-label" style="margin-top:4px">Rest</div>
+              </div>
+            </div>
+            <div class="mono" style="font-size:9px;color:var(--smoke);margin-top:8px;letter-spacing:.07em">NEXT &middot; SET 4 &middot; 62.5 KG &times; 8</div>
+          </div>
+
+          <div class="row" style="gap:6px;margin-top:auto">
+            <button class="btn ghost sm" type="button" style="flex:1">+30s</button>
+            <button class="btn ghost sm" type="button" style="flex:1">Skip rest</button>
+          </div>
+          <div class="row" style="justify-content:center;gap:5px">
+            <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="#939C93" stroke-width="2" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+            <span class="mono" style="font-size:8px;color:var(--dim);letter-spacing:.07em">ALERTS WITH THE SCREEN OFF</span>
+          </div>
+        </div>
+      </div></div>
+      <figcaption>
+        <div class="cap-h"><span class="cap-n">05</span><span class="cap-t">Rest and records</span></div>
+        <p class="cap-d">The record is announced at the moment you earn it, not in a report next week. Rest runs on its own colour, because time is not achievement.</p>
+        <span class="reqs">FR-034 &middot; FR-040 &middot; FR-041 &middot; FR-055</span>
+      </figcaption>
+    </figure>
+
+    <!-- 06 PLAN EDITOR ------------------------------------------------ -->
+    <figure>
+      <div class="phone"><div class="scr">
+        <div class="bar"><span>9:41</span><span class="pill"></span><span>100%</span></div>
+        <div class="body" style="gap:9px">
+          <div class="row">
+            <div>
+              <div class="k-label">Program</div>
+              <div class="num" style="font-size:16px;margin-top:4px">Coach PPL &middot; Sept</div>
+            </div>
+            <span class="chip">rev 4</span>
+          </div>
+
+          <div class="card" style="padding:9px 10px;border-color:var(--edge-hi)">
+            <div class="row" style="align-items:flex-start;gap:7px">
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#5CD9E8" stroke-width="2" style="flex:0 0 12px;margin-top:2px" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+              <div style="font-size:10.5px;color:var(--smoke);line-height:1.4">
+                <b style="color:var(--chalk);font-weight:600">8 Sept.</b> Coach raised bench to 60 kg.
+                Earlier sessions still show the old target.
+              </div>
+            </div>
+          </div>
+
+          <div class="k-label" style="margin-top:2px">Day A &middot; Push</div>
+
+          <div class="stack" style="gap:6px">
+            <div class="card" style="padding:8px 9px">
+              <div class="row" style="gap:7px">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#656E67" stroke-width="2" aria-hidden="true"><path d="M8 6h8M8 12h8M8 18h8"/></svg>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:11.5px">Barbell Bench Press</div>
+                  <div class="mono" style="font-size:8.5px;color:var(--volt);margin-top:3px">3 &times; 8 @ 60.0 KG</div>
+                </div>
+                <span class="chip" style="font-size:8px">90s</span>
+              </div>
+            </div>
+            <div class="card" style="padding:8px 9px">
+              <div class="row" style="gap:7px">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#656E67" stroke-width="2" aria-hidden="true"><path d="M8 6h8M8 12h8M8 18h8"/></svg>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:11.5px">Incline Dumbbell Press</div>
+                  <div class="mono" style="font-size:8.5px;color:var(--smoke);margin-top:3px">3 &times; 10&ndash;12 @ 22.5 KG</div>
+                </div>
+                <span class="chip" style="font-size:8px">75s</span>
+              </div>
+            </div>
+            <div class="card" style="padding:8px 9px">
+              <div class="row" style="gap:7px">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#656E67" stroke-width="2" aria-hidden="true"><path d="M8 6h8M8 12h8M8 18h8"/></svg>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:11.5px">Cable Lateral Raise</div>
+                  <div class="mono" style="font-size:8.5px;color:var(--smoke);margin-top:3px">4 &times; 15 @ 7.5 KG</div>
+                </div>
+                <span class="chip ice" style="font-size:8px">SS A</span>
+              </div>
+            </div>
+            <div class="card" style="padding:8px 9px;border-style:dashed;color:var(--dim)">
+              <div class="row" style="justify-content:center;gap:6px">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+                <span style="font-size:11px">Add exercise</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" style="gap:6px;margin-top:auto">
+            <button class="btn ghost sm" type="button" style="flex:1">Revision history</button>
+            <button class="btn sm" type="button" style="flex:1">Save</button>
+          </div>
+        </div>
+      </div></div>
+      <figcaption>
+        <div class="cap-h"><span class="cap-n">06</span><span class="cap-t">Plan editor</span></div>
+        <p class="cap-d">Where the coach's changes land. Editing a target writes a new revision instead of overwriting, so a session from August still shows the weights that were prescribed in August.</p>
+        <span class="reqs">FR-021 &middot; FR-022 &middot; FR-023</span>
+      </figcaption>
+    </figure>
+
+    <!-- 07 PROGRESS --------------------------------------------------- -->
+    <figure>
+      <div class="phone"><div class="scr">
+        <div class="bar"><span>9:41</span><span class="pill"></span><span>100%</span></div>
+        <div class="body" style="gap:10px">
+          <div class="row">
+            <div class="num" style="font-size:17px">Bench Press</div>
+            <span class="chip">8 weeks</span>
+          </div>
+
+          <div class="card" style="padding:10px 9px 7px">
+            <svg viewBox="0 0 210 96" width="100%" height="96" role="img" aria-label="Working weight on bench press rising from 45 kg in week 1 to 62.5 kg in week 8.">
+              <g stroke="#2B322E" stroke-width="1">
+                <line x1="26" y1="12" x2="204" y2="12"/>
+                <line x1="26" y1="40" x2="204" y2="40"/>
+                <line x1="26" y1="68" x2="204" y2="68"/>
+              </g>
+              <g fill="#656E67" font-family="Chivo Mono, monospace" font-size="8">
+                <text x="2" y="15">65</text>
+                <text x="2" y="43">55</text>
+                <text x="2" y="71">45</text>
+              </g>
+              <path d="M32 68 L56 61 L80 61 L104 47 L128 40 L152 33 L176 26 L200 19 L200 82 L32 82 Z" fill="#C7F73E" fill-opacity=".1"/>
+              <path d="M32 68 L56 61 L80 61 L104 47 L128 40 L152 33 L176 26 L200 19"
+                    fill="none" stroke="#C7F73E" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+              <circle cx="200" cy="19" r="4" fill="#C7F73E"/>
+              <circle cx="200" cy="19" r="7.5" fill="none" stroke="#C7F73E" stroke-opacity=".35" stroke-width="1.5"/>
+              <g fill="#656E67" font-family="Chivo Mono, monospace" font-size="7.5">
+                <text x="28" y="93">W1</text>
+                <text x="120" y="93">W5</text>
+                <text x="190" y="93">W8</text>
+              </g>
+            </svg>
+            <div class="row" style="margin-top:5px">
+              <span class="mono" style="font-size:8.5px;color:var(--dim)">WORKING WEIGHT</span>
+              <span class="mono" style="font-size:9px;color:var(--volt)">45.0 &rarr; 62.5 KG</span>
+            </div>
+          </div>
+
+          <div class="row" style="gap:7px">
+            <div class="tile"><div class="k-label">Volume</div><div class="num" style="font-size:16px;margin-top:4px">14.2<span class="u mono" style="font-size:8px;color:var(--dim)">t</span></div></div>
+            <div class="tile"><div class="k-label">Sessions</div><div class="num" style="font-size:16px;margin-top:4px">4<span class="u mono" style="font-size:8px;color:var(--dim)">/4</span></div></div>
+            <div class="tile"><div class="k-label">Adherence</div><div class="num" style="font-size:16px;margin-top:4px">94<span class="u mono" style="font-size:8px;color:var(--dim)">%</span></div></div>
+          </div>
+
+          <div class="k-label" style="margin-top:2px">Weekly volume</div>
+          <div class="row" style="align-items:flex-end;gap:5px;height:52px">
+            <i style="flex:1;height:44%;background:var(--edge-hi);border-radius:2px 2px 0 0"></i>
+            <i style="flex:1;height:52%;background:var(--edge-hi);border-radius:2px 2px 0 0"></i>
+            <i style="flex:1;height:48%;background:var(--edge-hi);border-radius:2px 2px 0 0"></i>
+            <i style="flex:1;height:66%;background:var(--edge-hi);border-radius:2px 2px 0 0"></i>
+            <i style="flex:1;height:61%;background:var(--edge-hi);border-radius:2px 2px 0 0"></i>
+            <i style="flex:1;height:74%;background:var(--edge-hi);border-radius:2px 2px 0 0"></i>
+            <i style="flex:1;height:82%;background:var(--edge-hi);border-radius:2px 2px 0 0"></i>
+            <i style="flex:1;height:100%;background:var(--volt);border-radius:2px 2px 0 0"></i>
+          </div>
+        </div>
+        <div class="nav">
+          <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Today</div>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h8M8 17h4"/></svg>Plan</div>
+          <div class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 18V10M10 18V5M16 18v-6M22 18V8"/></svg>Progress</div>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>You</div>
+        </div>
+      </div></div>
+      <figcaption>
+        <div class="cap-h"><span class="cap-n">07</span><span class="cap-t">Progress</span></div>
+        <p class="cap-d">One question answered in one look: is the bar getting heavier. The endpoint is emphasised because the most recent value is the one you came to check.</p>
+        <span class="reqs">FR-042 &middot; D1 &middot; FR-008 adherence</span>
+      </figcaption>
+    </figure>
+
+    <!-- 08 AREAS FOR IMPROVEMENT --------------------------------------- -->
+    <figure>
+      <div class="phone"><div class="scr">
+        <div class="bar"><span>9:41</span><span class="pill"></span><span>100%</span></div>
+        <div class="body" style="gap:11px">
+          <div>
+            <div class="num" style="font-size:17px">What you<br>are neglecting</div>
+            <div class="mono" style="font-size:8.5px;color:var(--dim);margin-top:6px;letter-spacing:.08em">SETS PER MUSCLE GROUP &middot; LAST 30 DAYS</div>
+          </div>
+
+          <div class="bars">
+            <div class="barrow"><span class="g">Chest</span><span class="track"><i class="fill" style="width:100%;display:block"></i></span><span class="n">42</span></div>
+            <div class="barrow"><span class="g">Back</span><span class="track"><i class="fill" style="width:86%;display:block"></i></span><span class="n">36</span></div>
+            <div class="barrow"><span class="g">Shoulders</span><span class="track"><i class="fill" style="width:69%;display:block"></i></span><span class="n">29</span></div>
+            <div class="barrow"><span class="g">Arms</span><span class="track"><i class="fill" style="width:57%;display:block"></i></span><span class="n">24</span></div>
+            <div class="barrow"><span class="g" style="color:var(--flare)">Legs</span><span class="track"><i class="fill low" style="width:19%;display:block"></i></span><span class="n" style="color:var(--flare)">8</span></div>
+            <div class="barrow"><span class="g" style="color:var(--flare)">Core</span><span class="track"><i class="fill low" style="width:12%;display:block"></i></span><span class="n" style="color:var(--flare)">5</span></div>
+          </div>
+
+          <div class="card" style="border-color:rgba(255,107,44,.35);background:rgba(255,107,44,.07);padding:10px">
+            <div class="row" style="align-items:flex-start;gap:8px">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#FF6B2C" stroke-width="2.2" style="flex:0 0 14px;margin-top:1px" aria-hidden="true"><path d="M12 9v5M12 17.5v.5"/><path d="M10.3 3.9 1.8 18.2A2 2 0 0 0 3.5 21h17a2 2 0 0 0 1.7-2.8L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+              <div>
+                <div style="font-size:11.5px;color:var(--chalk);font-weight:600">Legs are falling behind</div>
+                <div style="font-size:10.5px;color:var(--smoke);line-height:1.45;margin-top:3px">
+                  8 sets in 30 days against 42 for chest. Two leg sessions a week would close most of that gap.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="k-label">Suggested next targets</div>
+          <div class="stack" style="gap:6px">
+            <div class="card" style="padding:8px 9px">
+              <div class="row"><span style="font-size:11px">Bench Press</span><span class="mono" style="font-size:10px;color:var(--volt)">62.5 KG &uarr;</span></div>
+              <div style="font-size:9.5px;color:var(--smoke);margin-top:3px">All sets hit. Add one increment.</div>
+            </div>
+            <div class="card" style="padding:8px 9px">
+              <div class="row"><span style="font-size:11px">Romanian Deadlift</span><span class="mono" style="font-size:10px;color:var(--smoke)">70.0 KG =</span></div>
+              <div style="font-size:9.5px;color:var(--smoke);margin-top:3px">Missed reps on set 3. Match all sets first.</div>
+            </div>
+            <div class="card" style="padding:8px 9px">
+              <div class="row"><span style="font-size:11px">Overhead Press</span><span class="mono" style="font-size:10px;color:var(--blood)">36.0 KG &darr;</span></div>
+              <div style="font-size:9.5px;color:var(--smoke);margin-top:3px">Short two sessions running. Deload 10%.</div>
+            </div>
+          </div>
+        </div>
+      </div></div>
+      <figcaption>
+        <div class="cap-h"><span class="cap-n">08</span><span class="cap-t">Areas for improvement</span></div>
+        <p class="cap-d">The feature you asked for, made concrete. Every suggestion states the rule that produced it in plain words, so it can be argued with rather than obeyed.</p>
+        <span class="reqs">FR-043 &middot; FR-044 &middot; D4 &middot; D6</span>
+      </figcaption>
+    </figure>
+
+    <!-- 09 REMINDERS ---------------------------------------------------- -->
+    <figure>
+      <div class="phone"><div class="scr">
+        <div class="bar"><span>9:41</span><span class="pill"></span><span>100%</span></div>
+        <div class="body" style="gap:10px">
+          <div class="num" style="font-size:17px">Reminders</div>
+
+          <div class="card" style="border-color:rgba(92,217,232,.3);background:rgba(92,217,232,.06);padding:10px">
+            <div class="row" style="align-items:flex-start;gap:8px">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#5CD9E8" stroke-width="2" style="flex:0 0 14px;margin-top:1px" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18.5h2"/></svg>
+              <div>
+                <div style="font-size:11.5px;color:var(--chalk);font-weight:600">On iPhone, add Reps to your home screen</div>
+                <div style="font-size:10.5px;color:var(--smoke);line-height:1.45;margin-top:3px">
+                  Apple only delivers notifications to installed apps. Share, then Add to Home Screen.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="k-label">Training days</div>
+          <div class="stack" style="gap:6px">
+            <div class="card" style="padding:9px 10px">
+              <div class="row">
+                <div><div style="font-size:11.5px">Monday &middot; Pull</div><div class="mono" style="font-size:9px;color:var(--volt);margin-top:3px">18:30</div></div>
+                <span class="toggle on"></span>
+              </div>
+            </div>
+            <div class="card" style="padding:9px 10px">
+              <div class="row">
+                <div><div style="font-size:11.5px">Thursday &middot; Push</div><div class="mono" style="font-size:9px;color:var(--volt);margin-top:3px">18:30</div></div>
+                <span class="toggle on"></span>
+              </div>
+            </div>
+            <div class="card" style="padding:9px 10px">
+              <div class="row">
+                <div><div style="font-size:11.5px">Saturday &middot; Legs</div><div class="mono" style="font-size:9px;color:var(--dim);margin-top:3px">09:00 &middot; OFF</div></div>
+                <span class="toggle"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="k-label" style="margin-top:2px">During a session</div>
+          <div class="card" style="padding:9px 10px">
+            <div class="row">
+              <div style="flex:1"><div style="font-size:11.5px">Rest timer finished</div><div style="font-size:9.5px;color:var(--smoke);margin-top:3px">Buzz when the clock runs out</div></div>
+              <span class="toggle on"></span>
+            </div>
+          </div>
+          <div class="card" style="padding:9px 10px">
+            <div class="row">
+              <div style="flex:1"><div style="font-size:11.5px">Idle nudge</div><div style="font-size:9.5px;color:var(--smoke);margin-top:3px">After 10 min with no set logged</div></div>
+              <span class="toggle on"></span>
+            </div>
+          </div>
+        </div>
+      </div></div>
+      <figcaption>
+        <div class="cap-h"><span class="cap-n">09</span><span class="cap-t">Reminders</span></div>
+        <p class="cap-d">The iPhone limitation is stated as a step to take, not buried as a caveat. Permission is only requested after you switch a reminder on.</p>
+        <span class="reqs">FR-050 &middot; FR-052 &middot; FR-053 &middot; FR-054 &middot; FR-055</span>
+      </figcaption>
+    </figure>
+
+    <!-- 10 SHARE -------------------------------------------------------- -->
+    <figure>
+      <div class="phone"><div class="scr">
+        <div class="bar"><span>9:41</span><span class="pill"></span><span>100%</span></div>
+        <div class="body" style="gap:10px">
+          <div class="num" style="font-size:17px">Training<br>partners</div>
+
+          <div class="card lift" style="padding:11px">
+            <div class="k-label">Your invite link</div>
+            <div class="row" style="margin-top:7px;gap:8px">
+              <span class="mono" style="font-size:10px;color:var(--chalk);overflow:hidden;white-space:nowrap;text-overflow:ellipsis">reps.app/i/7KQ2-M4XD</span>
+              <button class="btn sm" type="button" style="width:auto;padding:0 12px">Copy</button>
+            </div>
+            <div class="mono" style="font-size:8px;color:var(--dim);margin-top:8px;letter-spacing:.06em">EXPIRES IN 14 DAYS &middot; 3 USES LEFT</div>
+          </div>
+
+          <div class="k-label">Connected</div>
+          <div class="stack" style="gap:6px">
+            <div class="card" style="padding:8px 9px">
+              <div class="row" style="gap:9px">
+                <span style="width:28px;height:28px;border-radius:50%;background:var(--rack);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--volt);flex:0 0 28px" class="mono">RJ</span>
+                <div style="flex:1"><div style="font-size:11.5px">Ravindu J.</div><div style="font-size:9.5px;color:var(--smoke)">Trained 4 times this week</div></div>
+              </div>
+            </div>
+            <div class="card" style="padding:8px 9px">
+              <div class="row" style="gap:9px">
+                <span style="width:28px;height:28px;border-radius:50%;background:var(--rack);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--ice);flex:0 0 28px" class="mono">AC</span>
+                <div style="flex:1"><div style="font-size:11.5px">Coach Amila</div><div style="font-size:9.5px;color:var(--smoke)">Shared 2 programs with you</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="k-label" style="margin-top:2px">Programs you share</div>
+          <div class="card" style="padding:9px 10px">
+            <div class="row">
+              <div style="flex:1"><div style="font-size:11.5px">Coach PPL &middot; Sept</div><div style="font-size:9.5px;color:var(--smoke);margin-top:3px">Copied by 2 people</div></div>
+              <span class="chip volt">Shared</span>
+            </div>
+          </div>
+
+          <div class="card" style="padding:10px;margin-top:auto">
+            <div class="row" style="align-items:flex-start;gap:8px">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#C7F73E" stroke-width="2" style="flex:0 0 13px;margin-top:1px" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+              <div style="font-size:10px;color:var(--smoke);line-height:1.45">
+                Sharing a program sends a copy. Your sessions, weights and records stay private to you.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div></div>
+      <figcaption>
+        <div class="cap-h"><span class="cap-n">10</span><span class="cap-t">Partners and sharing</span></div>
+        <p class="cap-d">Friends and coaches sign up through your link and run their own training. Sharing hands over a copy of a plan, never a window into your logs.</p>
+        <span class="reqs">FR-060 &middot; FR-061 &middot; FR-062 &middot; FR-063</span>
+      </figcaption>
+    </figure>
+
+  </div>
+
+  <p class="flowlabel">If the volt is not for you</p>
+
+  <div class="alts">
+    <div class="alt">
+      <h3>Furnace</h3>
+      <p>Same panel, heat instead of volt. Reads heavier and more aggressive. Costs you the record colour, which would move to cyan.</p>
+      <div class="prev" style="background:#100B09;border:1px solid #2E211B">
+        <div style="color:#8A7A72;font-family:var(--f-mono);font-size:8.5px;letter-spacing:.16em">SET 3 &middot; LIVE</div>
+        <div class="lg" style="color:#FF6B2C">62.5 <span style="font-size:12px;color:#8A7A72">KG &times; 8</span></div>
+        <div class="bt" style="background:#FF6B2C;color:#100B09">Log set 3</div>
+      </div>
+    </div>
+    <div class="alt">
+      <h3>Deep water</h3>
+      <p>Cooler and calmer, closer to a lab instrument than a weight room. Easier on the eyes for long sessions, less of a shove out the door.</p>
+      <div class="prev" style="background:#080C10;border:1px solid #1A2833">
+        <div style="color:#6E828E;font-family:var(--f-mono);font-size:8.5px;letter-spacing:.16em">SET 3 &middot; LIVE</div>
+        <div class="lg" style="color:#5CD9E8">62.5 <span style="font-size:12px;color:#6E828E">KG &times; 8</span></div>
+        <div class="bt" style="background:#5CD9E8;color:#080C10">Log set 3</div>
+      </div>
+    </div>
+    <div class="alt">
+      <h3>Chalk</h3>
+      <p>The light inversion, for anyone who finds dark apps hard to read. Same type and spacing, and it survives direct sunlight better.</p>
+      <div class="prev" style="background:#F1F0EA;border:1px solid #D9D7CE">
+        <div style="color:#6E6D66;font-family:var(--f-mono);font-size:8.5px;letter-spacing:.16em">SET 3 &middot; LIVE</div>
+        <div class="lg" style="color:#141614">62.5 <span style="font-size:12px;color:#6E6D66">KG &times; 8</span></div>
+        <div class="bt" style="background:#141614;color:#F1F0EA">Log set 3</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="note">
+    <strong>These are mockups, not the build.</strong>
+    Every number on these screens is example data, chosen to look like a real sixth week of a
+    push pull legs block. The exercise tiles stand in for the illustrated demos that ship in the
+    catalog. Nothing here is implemented yet, and nothing gets implemented until the spec in
+    <span class="mono" style="font-size:12px;color:var(--chalk)">specs/001-core/spec.md</span> is approved.
+  </p>
+
+</div>

@@ -1,0 +1,53 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+.yarn/
+
+# Build output
+.next/
+out/
+build/
+dist/
+
+# Environment and secrets. Never commit these.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Testing
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+blob-report/
+
+# Vercel and deployment
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Editors and OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+
+# Logs
+*.log
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Local scratch
+scratch/
+tmp/
+
+# Drizzle local artifacts
+drizzle/meta/_journal.json.bak
