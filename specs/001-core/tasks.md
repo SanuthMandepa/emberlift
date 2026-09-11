@@ -148,7 +148,7 @@ Legend: `[ ]` not started, `[~]` in progress, `[x]` done, `[!]` blocked.
 | [ ] 8.5 | Data export as JSON | Constitution VI.1 |
 | [ ] 8.6 | Run `/security-review`, resolve or document every finding | security.md section 10 |
 | [ ] 8.7 | Verify git history contains no secret | T10 |
-| [ ] 8.8 | Repo-wide check for em dashes in shipped strings | Constitution VIII.1 |
+| [x] 8.8 | Repo-wide em dash and AI attribution guards in CI, with a positive control proving the pattern detects | Constitution VIII.1, Article X |
 | [ ] 8.9 | Deploy to Vercel, verify the Actions cron reaches production | - |
 | [ ] 8.10 | Install on a real iPhone and a real Android, log one real session on each | Success criteria |
 

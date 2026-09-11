@@ -1,0 +1,94 @@
+name: Guard
+
+# Enforces the two conventions in specs/constitution.md that are easy to state and
+# easy to violate by accident:
+#   Article VIII.1  no em dashes anywhere
+#   Article X       no AI is ever credited as a contributor
+#
+# Two notes on how this is written.
+#
+# 1. The patterns are built so this file does not match itself. The em dash is
+#    matched by its PCRE codepoint escape rather than typed literally, and the HTML
+#    entity forms use a one character class so the pattern text differs from the text
+#    it detects. Use \x{2014}, not \xe2\x80\x94: in a UTF-8 locale PCRE reads \xNN as
+#    a character, not a raw byte, so the byte form silently matches nothing. That was
+#    verified with a positive control before this file was committed.
+#
+# 2. Exit codes are checked explicitly rather than with `if grep ...`. grep returns
+#    0 for a match, 1 for no match, and 2 or higher for an error such as a locale it
+#    cannot handle. A plain `if` treats an error the same as no match, so a broken
+#    guard would pass silently. That failure mode was hit during development, so it
+#    is handled here rather than trusted.
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  LC_ALL: C.UTF-8
+
+jobs:
+  conventions:
+    name: Repository conventions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: No em dashes in tracked files
+        run: |
+          set -uo pipefail
+          grep -rnP \
+            --exclude-dir=.git \
+            --exclude-dir=node_modules \
+            --exclude-dir=.next \
+            '\x{2014}|&m[d]ash;|&#821[2];' .
+          status=$?
+          case "$status" in
+            0) echo "::error::Em dash found. Constitution Article VIII.1 forbids em dashes. Use a comma, a colon, a period, or parentheses."; exit 1 ;;
+            1) echo "Clean: no em dashes in tracked files." ;;
+            *) echo "::error::grep exited with status $status, so this check did not run. Failing rather than passing on an unverified result."; exit 1 ;;
+          esac
+
+      - name: No em dashes in commit messages
+        run: |
+          set -uo pipefail
+          git log --format='%s%n%b' | grep -nP '\x{2014}'
+          status=$?
+          case "$status" in
+            0) echo "::error::Em dash found in a commit message. Constitution Article VIII.1."; exit 1 ;;
+            1) echo "Clean: no em dashes in commit messages." ;;
+            *) echo "::error::grep exited with status $status, so this check did not run."; exit 1 ;;
+          esac
+
+      - name: No AI attribution in commit history
+        run: |
+          set -uo pipefail
+          git log --format='%an%n%ae%n%cn%n%ce%n%s%n%b' \
+            | grep -inE 'co-authored-by:.*(claude|anthropic|copilot|gpt|gemini|\[bot\])|generated with.*(claude|copilot|codex)|ai-(assisted|generated)'
+          status=$?
+          case "$status" in
+            0) echo "::error::AI attribution found in the commit history. Constitution Article X forbids crediting an assistant as author, co-author or committer."; exit 1 ;;
+            1) echo "Clean: no AI attribution in commit history." ;;
+            *) echo "::error::grep exited with status $status, so this check did not run."; exit 1 ;;
+          esac
+
+      - name: No AI attribution in tracked files
+        run: |
+          set -uo pipefail
+          grep -rniE \
+            --exclude-dir=.git \
+            --exclude-dir=node_modules \
+            --exclude=guard.yml \
+            'co-authored-by:.*(claude|anthropic|copilot)|generated with \[?claude' .
+          status=$?
+          case "$status" in
+            0) echo "::error::AI attribution found in a tracked file. Constitution Article X."; exit 1 ;;
+            1) echo "Clean: no AI attribution in tracked files." ;;
+            *) echo "::error::grep exited with status $status, so this check did not run."; exit 1 ;;
+          esac

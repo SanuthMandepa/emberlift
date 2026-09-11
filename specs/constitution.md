@@ -1,6 +1,6 @@
 # Project Constitution
 
-Version 1.0.0 | Ratified 2026-09-11
+Version 1.1.0 | Ratified 2026-09-11 | Last amended 2026-09-11
 
 This document governs every decision in this project. A spec, plan, or pull request
 that violates an article here is rejected, not debated. Amendments require a dated
@@ -95,10 +95,15 @@ monthly figure stated. This constraint is a feature: it forces simplicity.
 
 ## Article VIII: Writing Style
 
-1. **No em dashes** in any user-facing text, code comment, commit message, or
-   document in this repository. Use a comma, a colon, a period, or parentheses.
+1. **No em dashes.** Not in product copy, not in code, not in comments, not in
+   commit messages, not in pull request descriptions, not in any document in this
+   repository. Use a comma, a colon, a period, or parentheses. This covers the
+   character itself and its HTML entity forms.
+   En dashes in numeric ranges (8 to 12 reps written as a range) are permitted.
 2. Prose is plain and direct. No marketing voice in the product UI.
 3. Error messages tell the user what happened and what to do next.
+
+Enforced by `.github/workflows/guard.yml`, which fails the build on any violation.
 
 ## Article IX: Progressive Enhancement Of Scope
 
@@ -107,6 +112,25 @@ features, coach dashboards, and integrations are additive. The data model
 accommodates them from the start (roles, ownership, sharing tables exist), but the
 UI for them is not built until the core is proven in real gym sessions.
 
+## Article X: Authorship And Attribution
+
+This project is authored by Sanuth Mandepa. Tools used to produce it are not credited
+in it.
+
+1. **No AI is ever a contributor.** Claude, or any other assistant, must never appear
+   as a commit author, a commit co-author, a committer, a name in the GitHub
+   contributor graph, or an entry in any `AUTHORS`, `CONTRIBUTORS`, `package.json`
+   author field, or license header.
+2. **No attribution trailers in commit messages.** No `Co-Authored-By` line naming an
+   assistant, no "Generated with" line, no "AI-assisted" note, no robot emoji.
+3. **No attribution in pull request descriptions** or release notes.
+4. Every commit is authored and committed under the human's own name and email.
+5. This is not about concealment. It is about responsibility. Whoever commits the
+   code has reviewed it and owns it, and a tool credit would blur that.
+
+Enforced by `.github/workflows/guard.yml`, which scans the full commit history and
+fails the build on any violation.
+
 ---
 
 ## Amendment Log
@@ -114,3 +138,4 @@ UI for them is not built until the core is proven in real gym sessions.
 | Date | Version | Change |
 |------|---------|--------|
 | 2026-09-11 | 1.0.0 | Initial ratification. |
+| 2026-09-11 | 1.1.0 | Added Article X (Authorship And Attribution). Strengthened Article VIII.1 to cover HTML entity forms and pull request descriptions. Both are now enforced in CI by `guard.yml`. |

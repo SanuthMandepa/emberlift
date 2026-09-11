@@ -118,6 +118,13 @@ When the spec is approved, work starts at task 0.1 in
 
 ## Conventions
 
-- **No em dashes** anywhere in this repository. Constitution, Article VIII.
+- **No em dashes** anywhere in this repository: product copy, code, comments, commit
+  messages, pull requests. Constitution, Article VIII.
+- **No AI is credited as a contributor.** No assistant appears as an author,
+  co-author or committer, and no attribution trailers go in commit messages or pull
+  requests. Whoever commits has reviewed the work and owns it. Constitution, Article X.
 - Secrets never enter git. `.env` is ignored from the first commit.
 - A requirement that cannot be tested is not a requirement.
+
+The first two are enforced in CI by [`.github/workflows/guard.yml`](.github/workflows/guard.yml),
+which scans tracked files and the full commit history on every push.
