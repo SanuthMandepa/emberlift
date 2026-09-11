@@ -1,4 +1,4 @@
-# Reps
+# Emberlift
 
 A training log for people who follow a coach's plan. Plan the workout, log what you
 actually lifted against what was prescribed, get reminded on training days, and find
@@ -105,8 +105,13 @@ just beat.
 
 ## Current state
 
-Nothing is implemented. The specification is drafted and awaiting approval, and four
+Nothing is implemented. The specification is drafted and awaiting approval, and three
 open questions in [`spec.md`](specs/001-core/spec.md) section 8 are still open.
+
+Flutter was evaluated as an alternative to the web app on 2026-09-11 and rejected.
+The reasoning, including the advantages it would have brought, is recorded in
+[`plan.md`](specs/001-core/plan.md) under Explicitly rejected, so the decision can be
+revisited against evidence rather than re-argued from memory.
 
 When the spec is approved, work starts at task 0.1 in
 [`tasks.md`](specs/001-core/tasks.md).

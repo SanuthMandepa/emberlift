@@ -1,4 +1,4 @@
-# Specification: Reps, Core Training Log
+# Specification: Emberlift, Core Training Log
 
 Feature ID: 001-core
 Status: **DRAFT, awaiting product owner approval**
@@ -6,8 +6,9 @@ Author: Engineering
 Date: 2026-09-11
 Governed by: [../constitution.md](../constitution.md)
 
-> Working name is "Reps". Final name is [NEEDS CLARIFICATION: product owner to confirm
-> app name and GitHub repository name].
+> App name is **Emberlift**, confirmed by the product owner on 2026-09-11.
+> Repository is public. Target platform is an installable web app, with Flutter
+> evaluated and rejected on 2026-09-11 (see [plan.md](./plan.md), Explicitly rejected).
 
 ---
 
@@ -254,7 +255,7 @@ These block the plan being finalized. Per Constitution Article I they must be an
 
 | ID | Question | Owner | Status |
 |---|---|---|---|
-| Q-001 | Final app name and GitHub repository name, and public or private visibility | Product owner | **OPEN** |
+| Q-001 | Final app name and GitHub repository name, and public or private visibility | Product owner | **CLOSED 2026-09-11.** Name is Emberlift, repository `emberlift`, public |
 | Q-002 | Default unit: kilograms or pounds | Product owner | Proposed: kilograms, user switchable |
 | Q-003 | Should a deliberate "rest week" be a first class concept in streak calculation | Product owner | Proposed: yes, FR-045 assumes it |
 | Q-004 | Is a weekly training target set by the user, or inferred from their schedule | Product owner | Proposed: inferred from scheduled days, user overridable |

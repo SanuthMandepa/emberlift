@@ -1,4 +1,4 @@
-# Technical Plan: Reps, Core Training Log
+# Technical Plan: Emberlift, Core Training Log
 
 Feature ID: 001-core
 Status: **DRAFT, follows [spec.md](./spec.md)**
@@ -26,7 +26,7 @@ citation is an unjustified decision and should be challenged in review.
 | Sync | **Custom outbox + pull-on-reconnect**, last write wins per Logged Set | FR-035, FR-036 |
 | Service worker | **Serwist** (maintained Workbox successor) | FR-070, FR-071, offline shell |
 | Push | **Web Push, VAPID, `web-push` library** | FR-050. Free and vendor independent (NFR-005) |
-| Scheduler | **GitHub Actions cron** calling a signed internal endpoint every 5 minutes | Vercel Hobby cron granularity is one run per day, which cannot satisfy FR-050's 5 minute window. Actions is free |
+| Scheduler | **GitHub Actions cron** calling a signed internal endpoint every 5 minutes | Vercel Hobby cron granularity is one run per day, which cannot satisfy FR-050's 5 minute window. Actions minutes are unlimited on a public repository, and this repository is public |
 | Transactional email | **Resend free tier** | Needed for FR-001, FR-004, FR-008, FR-009. Not used for reminders |
 | Rate limiting | **Postgres backed fixed window counters** | FR-008. Avoids adding a paid Redis (NFR-005) |
 | Hosting | **Vercel Hobby** | NFR-005 |
@@ -39,6 +39,34 @@ citation is an unjustified decision and should be challenged in review.
 - **Firebase**: document store is a poor fit for set and session relations.
 - **Redis**: a recurring cost, and Postgres handles our rate limit volume.
 - **React Native / Expo**: requires a paid Apple Developer account for iOS distribution, violating Constitution Article VII.
+
+- **Flutter** (evaluated 2026-09-11 at the product owner's request, rejected). Flutter
+  is the strongest alternative considered and the decision was close on Android alone.
+  Its real advantages over a PWA are worth recording, because if the constraints
+  change they are reasons to revisit:
+
+  - Locally scheduled notifications need no server at all, which would delete the
+    GitHub Actions cron and most of build phase 6.
+  - SQLite via Drift is a more mature offline store than IndexedDB, with real
+    transactions and queries.
+  - Native rendering and gesture handling.
+
+  It was rejected on three grounds:
+
+  1. **Sharing.** FR-060 and F1 exist so friends and coaches can join by link. Flutter
+     distribution is an APK download plus enabling installs from unknown sources, or a
+     Play Store listing. Both are a materially worse conversion than tapping a URL, and
+     the product owner does not yet know which platforms their friends use.
+  2. **iOS at zero cost is not possible.** A free Apple Personal Team excludes the push
+     notification entitlement entirely and expires builds after 7 days. Flutter on
+     iPhone would deliver none of Epic E. Paying the $99/yr fee violates Constitution
+     Article VII.
+  3. **No Mac.** The development machine is Windows. iOS builds would depend on hosted
+     macOS CI, and on-device debugging would remain impossible.
+
+  The product owner uses Android, where every PWA limitation cited above is an iOS
+  limitation that does not apply. Revisit this decision if the product owner later
+  accepts a recurring Apple fee, or if the user base turns out to be Android only.
 
 ## 2. Architecture
 
